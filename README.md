@@ -25,8 +25,13 @@ python3 Segmentation.py
 
 * __Seg_RCNN.py__
 
-This file runs the pre-trained Mask R-CNN model (Folder Mask_RCNN) and performs object segmentation as well as object detection. To run it on the test image, just run the follwing:
+This file runs the pre-trained Mask R-CNN model (Folder Mask_RCNN) and performs object segmentation as well as object detection. To run it on the test image, just run the following:
 ```bash
 python3 Seg_RCNN.py
 ```
+Here is the result of the segmentation and detection performed on the R-CNN:
+![R-CNN](/images/R-CNN_seg.png "Segmentation and object detection by R-CNN")
+We have also access to the masks computed by the R-CNN:
+![R-CNNMask](/images/mask0.png "Example of a mask computed by R-CNN")
+
 
