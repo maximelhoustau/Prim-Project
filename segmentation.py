@@ -16,6 +16,7 @@ def mean_seg(image):
             gray_r[i] = 0
     gray = gray_r.reshape(gray.shape[0],gray.shape[1])
     cv2.imshow("Mean segmentation", gray)
+    cv2.imwrite("./images/mean_seg_gray.jpg", 255*gray)
 
 def instance_seg(image):
     gray = rgb2gray(image)
@@ -35,6 +36,7 @@ def instance_seg(image):
     gray = gray_r.reshape(gray.shape[0],gray.shape[1])
     #cv2.imshow("Instance segmentation", gray)
     plt.imshow(gray, cmap='gray')
+    cv2.imwrite("./images/instance_seg_gray.jpg", 255*gray)
     plt.show()
 
 def k_mean_seg(image, nb_cluster):
@@ -45,6 +47,8 @@ def k_mean_seg(image, nb_cluster):
     pic2show = kmeans.cluster_centers_[kmeans.labels_]
     cluster_pic = pic2show.reshape(pic.shape[0], pic.shape[1], pic.shape[2])
     cv2.imshow("Kmean with "+str(nb_cluster)+" clusters", cluster_pic)
+    cv2.imwrite("./images/kmean_seg.jpg", 255*cluster_pic)
+
 
 
 if __name__ == "__main__":
@@ -57,6 +61,7 @@ if __name__ == "__main__":
     gray = rgb2gray(image)
     print(gray.shape)
     cv2.imshow("Field", gray)
+    cv2.imwrite("./images/initial_image.jpg", 255*gray)
     mean_seg(image)
     instance_seg(image)
 
