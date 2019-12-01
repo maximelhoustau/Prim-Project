@@ -8,6 +8,6 @@ This file basically takes a video and shows the objects moving into it. We suppo
 ```bash
 python3 Motion-Detection.py -v 'path_to_video' -a 'size_of_minimal_detected_box' -i 'path_to_initalization_image'
 ```
->> -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
->> -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
->> -i : [str] option to pass the path of the image we would like to initialize the background; otherwise the background will be the first frame of the video/webcam. Be careful, the initialization image need to have the same size as the frames of the videos.
+>* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
+>* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
+>* -i : [str] option to pass the path of the image we would like to initialize the background; otherwise the background will be the first frame of the video/webcam. Be careful, the initialization image need to have the same size as the frames of the videos.
