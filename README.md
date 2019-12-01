@@ -25,6 +25,8 @@ python3 Segmentation.py
 
 * __Seg_RCNN.py__
 
+*tensorflow version < 2 required*
+
 This file runs the pre-trained Mask R-CNN model (Folder Mask_RCNN) and performs object segmentation as well as object detection. To run it on the test image, just run the following:
 ```bash
 python3 Seg_RCNN.py
