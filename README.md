@@ -11,3 +11,22 @@ python3 Motion-Detection.py -v 'path_to_video' -a 'size_of_minimal_detected_box'
 >* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
 >* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
 >* -i : [str] option to pass the path of the image we would like to initialize the background; otherwise the background will be the first frame of the video/webcam. Be careful, the initialization image need to have the same size as the frames of the videos.
+
+* __Segmentation.py__
+
+This file takes as input the five_test.png picture located into the images folder. Here we test 3 techniques of segmentation on the input picture: mean segmentation, instance segmentation and a k-mean segmentation. Just run the fowwing to obtain the computed images:
+```bash
+python3 Segmentation.py
+```
+![GrayedOriginal](/images/initial_image.jpg "Original grayed frame of the video")
+![MeanSeg](/images/mean_seg_gray.jpg "Mean Segmentation on the original frame")
+![InstSeg](/images/instance_seg_gray.jpg "Instance Segmentation on the original frame")
+![KMean](/images/kmean_seg.jpg "K-Mean Segmentation on the original frame")
+
+* __Seg_RCNN.py__
+
+This file runs the pre-trained Mask R-CNN model (Folder Mask_RCNN) and performs object segmentation as well as object detection. To run it on the test image, just run the follwing:
+```bash
+python3 Seg_RCNN.py
+```
+
