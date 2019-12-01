@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 from matplotlib import patches,  lines
 from matplotlib.patches import Polygon
 import IPython.display
+import cv2
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../")
@@ -163,6 +164,9 @@ def display_instances(image, boxes, masks, class_ids, class_names,
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
     ax.imshow(masked_image.astype(np.uint8))
+    plt.savefig(os.path.abspath('images/R-CNN_seg.png'))
+    #cv2.imshow("Image segmentation computed by R-CNN", masked_image.astype(np.uint8))
+    
     if auto_show:
         plt.show()
 
