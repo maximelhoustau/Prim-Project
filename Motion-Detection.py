@@ -13,6 +13,9 @@ ap.add_argument("-a", "--min-area", type=int, default=500, help="minimum area si
 
 args = vars(ap.parse_args())
 
+image_folder = "./images/"
+video_folder = "./videos/"
+
 # if the video argument is None, then we are reading from webcam
 if args.get("video", None) is None:
 	vs = VideoStream(src=0).start()
@@ -20,7 +23,7 @@ if args.get("video", None) is None:
 
 # otherwise, we are reading from a video file
 else:
-	vs = cv2.VideoCapture(args["video"])
+	vs = cv2.VideoCapture(video_folder + args["video"])
 
 # initialize the background as a picture
 if args.get("initialization", None) is None:
@@ -29,20 +32,17 @@ if args.get("initialization", None) is None:
 # otherwise, we initialize the frame to none and we'll take the first frame of the video as
 # background
 else:
-	firstFrame = cv2.imread(args["initialization"])
-	print(firstFrame.shape)
-	firstFrame = imutils.resize(firstFrame, width=500)
+	firstFrame = cv2.imread(image_folder + args["initialization"])
+	firstFrame = imutils.resize(firstFrame, width=800)
 	firstFrame = cv2.cvtColor(firstFrame, cv2.COLOR_BGR2GRAY)
 	firstFrame = cv2.GaussianBlur(firstFrame, (21, 21), 0)
-	print(firstFrame.shape)
-
 
 # loop over the frames of the video
 while True:
 	# grab the current frame and initialize the occupied/unoccupied
 	# text
 	frame = vs.read()
-	print(frame.shape)
+	#print(frame.shape)
 	frame = frame if args.get("video", None) is None else frame[1]
 	text = "Unoccupied"
 
@@ -52,10 +52,10 @@ while True:
 		break
 
 	# resize the frame, convert it to grayscale, and blur it
-	frame = imutils.resize(frame, width=500)
+	frame = imutils.resize(frame, width=800)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 	gray = cv2.GaussianBlur(gray, (21, 21), 0)
-	print(gray.shape)
+	
 	# if the first frame is None, initialize it
 	if firstFrame is None:
 		firstFrame = gray
@@ -97,6 +97,11 @@ while True:
 	# if the `q` key is pressed, break from the lop
 	if key == ord("q"):
 		break
+	    
+	if key == ord("w"):
+	    cv2.imwrite(image_folder+"MD_frame.jpg", frame)
+	    cv2.imwrite(image_folder+"MD_thresh.jpg", thresh)
+	    cv2.imwrite(image_folder+"MD_delta.jpg", frameDelta)
 
 # cleanup the camera and close any open windows
 vs.stop() if args.get("video", None) is None else vs.release()
