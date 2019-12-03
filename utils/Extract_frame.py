@@ -13,9 +13,9 @@ video_folder = "../videos/"
 
 vidcap = cv2.VideoCapture(video_folder+args["video"])
 time = args["time"]*1000
-vidcap.set(cv2.CAP_PROP_POS_MSEC,time)      # just cue to 20 sec. position
+vidcap.set(cv2.CAP_PROP_POS_MSEC,time)
 success,image = vidcap.read()
 if success:
-    cv2.imwrite(image_folder+args["image"], image)     # save frame as JPEG file
+    cv2.imwrite(image_folder+args["image"], image)
     cv2.imshow(str(time)+"sec",image)
     cv2.waitKey()
