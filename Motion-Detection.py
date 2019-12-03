@@ -4,7 +4,7 @@ import datetime
 import imutils
 import time
 import cv2
-from Apply_mask import apply_mask
+from utils.Apply_mask import apply_mask
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
