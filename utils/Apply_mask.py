@@ -15,6 +15,9 @@ for row in range(mask.shape[0]):
         if( (250 <= row <= 600) & ( 1240 <= column <= 1280)):
             mask[row, column] = 1
 
+        if( (400 <= row <= 600) & ( 1220 <= column <= 1280)):
+            mask[row, column] = 1
+
 
 def apply_mask(image):
     result = image.copy()
@@ -23,13 +26,15 @@ def apply_mask(image):
 
 
 if __name__ == "__main__":
+    
+    image_folder = "../images/"
 
     ap = argparse.ArgumentParser()
     ap.add_argument("-i", "--image", help = "path to the image on which the mask is applying")
 
     args = vars(ap.parse_args())
 
-    image = cv2.imread(args["image"])
+    image = cv2.imread(image_folder+args["image"])
     result = image.copy()
 
     print(image.shape)

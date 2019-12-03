@@ -9,8 +9,8 @@ ap.add_argument("-e", "--end", type=int, help="Time to end extraction in minutes
 
 args = vars(ap.parse_args())
 
-video_path = args["video"]
-video_path_dest = args["video_destination"]
+video_path = "../videos/"+args["video"]
+video_path_dest = "../images/"+args["video_destination"]
 start_time = args["start"]
 end_time = args["end"]
 
