@@ -1,5 +1,6 @@
 import cv2
 import argparse
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help = "path to the video file")
 ap.add_argument("-i", "--image", help = "path to the image file saved")
