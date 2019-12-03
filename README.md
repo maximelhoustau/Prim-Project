@@ -12,15 +12,21 @@ python3 Motion-Detection.py -v 'path_to_video' -a 'size_of_minimal_detected_box'
 >* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
 >* -i : [str] option to pass the path of the image we would like to initialize the background; otherwise the background will be the first frame of the video/webcam. Be careful, the initialization image need to have the same size as the frames of the videos.
 
-Here are the results with the following terminal line:
+Here are the outputs with the following terminal line:
 ```bash
-python3 Motion-Detection.py -v test.mp4 -i fieldref.jpg -a 150
+python3 Motion-Detection.py -v timeline_test.mp4 -i timeline_test_ref.jpg -a 500
 ```
-![RefFrame](/images/fieldref.jpg)
+We can see in black the mask applied to avoid unwanted detection in these particular zones:
+![FrameDetection](/images/MD_frame.jpg)
 ![DeltaFrame](/images/MD_delta.jpg)
 ![ThreshFrame](/images/MD_thresh.jpg)
-![FrameDetection](/images/MD_frame.jpg)
+![RefFrame](/images/fieldref.jpg)
 
+The terminal output is the following timeline:
+```bash
+[[0.0, 48.6, True], [48.6, 104.8, False], [104.8, 180.04, True]]
+```
+The two first element of each vector are the beginning and the ending time of this interval, the third element is a boolean which indicates if there are mouvements on the fields (i.e if there is someone playing).
 
 * __Segmentation.py__
 
