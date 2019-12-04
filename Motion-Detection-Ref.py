@@ -2,10 +2,12 @@ from imutils.video import VideoStream
 import argparse
 import datetime
 import imutils
-import time
+import time as T
 import cv2
 from utils.Apply_mask import apply_mask
 
+
+start_time = T.time()
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help="path to the video file")
@@ -138,3 +140,5 @@ cv2.destroyAllWindows()
 timeline.append([time, count/fps, event])
 timeline = timeline[1:]
 print(timeline)
+
+print("Execution time : "+str(T.time() - start_time))
