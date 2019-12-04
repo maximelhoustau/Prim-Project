@@ -8,8 +8,7 @@ This file computes the absolute difference between successful frames of a video,
 ```bash
 python3 Motion-Detection-Flow.py -v 'path_to_video' -i 'path_to_initalization_image' -d 'display'
 ```
->* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
->* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
+>* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam:
 >* -d : [int] choose if you want the real time display or not. Default = 1 else 0
 
 Here are the outputs with the following terminal line:
