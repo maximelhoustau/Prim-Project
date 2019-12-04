@@ -2,19 +2,36 @@
 
 This is the repository that contains all code written during a project I worked on with the French start-up Footbar. The goal of this AI project is to analyse videos of 5 vs 5 football matches in order to detect specific actions over time and measure some physical caracteristics of the players on the field (speed for example).
 
-* __Motion-Detection.py__
+* __Motion-Detection-Flow.py__
+
+This file computes the absolute difference between successful frames of a video, and then plot the number of pixels activated by the difference followed by a threshold as a measure of global mouvement estimation. We then plot and save it. Here is how to use it:
+```bash
+python3 Motion-Detection-Flow.py -v 'path_to_video' -i 'path_to_initalization_image' -d 'display'
+```
+>* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
+>* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
+>* -d : [int] choose if you want the real time display or not. Default = 1 else 0
+
+Here are the outputs with the following terminal line:
+```bash
+python3 Motion-Detection-Flow.py -v timeline_test.mp4 -a 500
+```
+![GMEMeasures](/images/GME.png)
+
+* __Motion-Detection-Ref.py__
 
 This file basically takes a video and shows the objects moving into it. We suppose here that the camera is fixed and that the background is always the same. The principle of the algorithm is to store a frame containing the background and compute the difference between it and every other frames of the video to show what changed. Here is how to use it : 
 ```bash
-python3 Motion-Detection.py -v 'path_to_video' -a 'size_of_minimal_detected_box' -i 'path_to_initalization_image'
+python3 Motion-Detection-Ref.py -v 'path_to_video' -a 'size_of_minimal_detected_box' -i 'path_to_initalization_image' -d 'display'
 ```
 >* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam
 >* -a : [int] size of the minimal box to detect to avoid noise detection. Default = 500
 >* -i : [str] option to pass the path of the image we would like to initialize the background; otherwise the background will be the first frame of the video/webcam. Be careful, the initialization image need to have the same size as the frames of the videos.
+>* -d : [int] choose if you want the real time display or not. Default = 1 else 0
 
 Here are the outputs with the following terminal line:
 ```bash
-python3 Motion-Detection.py -v timeline_test.mp4 -i timeline_test_ref.jpg -a 500
+python3 Motion-Detection-Ref.py -v timeline_test.mp4 -i timeline_test_ref.jpg -a 500
 ```
 We can see in black the mask applied to avoid unwanted detection in these particular zones:
 ![FrameDetection](/images/MD_frame.jpg)
