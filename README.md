@@ -16,6 +16,10 @@ Here are the outputs with the following terminal line:
 ```bash
 python3 Motion-Detection-Flow.py -v timeline_test.mp4 -a 500
 ```
+Let's compare it with the same video unmasked:
+![GMEMeasuresNotMasked](/images/GME_notmasked.png)
+
+This is the output with a masked used to avoid noise on score boards and field limitations:
 ![GMEMeasures](/images/GME.png)
 
 * __Motion-Detection-Ref.py__
