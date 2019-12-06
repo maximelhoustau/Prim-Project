@@ -1,6 +1,6 @@
 # Prim-Project
 
-This is the repository that contains all code written during a project I worked on with the French start-up Footbar. The goal of this AI project is to analyse videos of 5 vs 5 football matches in order to detect specific actions over time and measure some physical caracteristics of the players on the field (speed for example).
+This is the repository that contains all code written during a project I worked on for my last year as an engineering student. The goal of this AI project is to analyse videos of 5 vs 5 football matches in order to detect specific actions over time and measure some physical caracteristics of the players on the field (speed for example).
 
 * __Motion-Detection-Flow.py__
 
@@ -16,8 +16,8 @@ Here are the outputs with the following terminal line:
 ```bash
 python3 Motion-Detection-Flow.py -v timeline_test.mp4 -r 500
 ```
-We have the comparisons of the signals in output of the algorithm when we apply a mask or not, and when we resize the image to a width of 500:
-![GMEComp500](/images/GME_comparison_500.png)
+We have the comparisons of the signals in output of the algorithm when we apply a mask or not, and when we resize the image to a width of 1000 and 500:
+![GMEComp](/images/GME_comparison.png)
 
 The execution time comparison is made in the terminal output:
 ```bash
@@ -26,51 +26,31 @@ Displayed : 0
 
 Masked : 0
 Size of the frames : (720, 1280, 3)
-Execution time : 55.12852096557617
+Execution time : 54.774624824523926
 
 Masked : 1
 Size of the frames : (720, 1280, 3)
-Execution time : 97.16807866096497
+Execution time : 95.12435102462769
+
+Masked : 0
+Size of the frames : (562, 1000, 3)
+Execution time : 66.1147301197052
+
+Masked : 1
+Size of the frames : (562, 1000, 3)
+Execution time : 108.77165603637695
 
 Masked : 0
 Size of the frames : (281, 500, 3)
-Execution time : 49.86319613456726
+Execution time : 50.257920026779175
 
 Masked : 1
 Size of the frames : (281, 500, 3)
-Execution time : 83.85430908203125
-
+Execution time : 80.97144603729248
 ```
+We also have access to the noise in the video by substracting the unmasked signals by the masked signals:
+![NoiseGMEComp](/images/Noise_GME_comparison.png)
 
-Here are the outputs with the following terminal line:
-```bash
-python3 Motion-Detection-Flow.py -v timeline_test.mp4 -r 1000
-```
-We have the comparisons of the signals in output of the algorithm when we apply a mask or not, and when we resize the image to a width of 1000:
-![GMEComp1000](/images/GME_comparison_1000.png)
-
-The execution time comparison is made in the terminal output:
-```bash
-Video: ./videos/timeline_test.mp4
-Displayed : 0
-
-Masked : 0
-Size of the frames : (720, 1280, 3)
-Execution time : 56.564244985580444
-
-Masked : 1
-Size of the frames : (720, 1280, 3)
-Execution time : 94.05397605895996
-
-Masked : 0
-Size of the frames : (281, 500, 3)
-Execution time : 49.49067497253418
-
-Masked : 1
-Size of the frames : (281, 500, 3)
-Execution time : 81.78049516677856
-
-```
 
 * __Motion-Detection-Ref.py__
 
