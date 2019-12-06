@@ -6,7 +6,7 @@ This is the repository that contains all code written during a project I worked 
 
 This file computes the absolute difference between successful frames of a video, and then plot the number of pixels activated by the difference followed by a threshold as a measure of global mouvement estimation. We then plot and save it. Here is how to use it:
 ```bash
-python3 Motion-Detection-Flow.py -v 'path_to_video' -i 'path_to_initalization_image' -d 'display'
+python3 Motion-Detection-Flow.py -v 'path_to_video' -i 'path_to_initalization_image' -d 'display' -r 'resized width'
 ```
 >* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam:
 >* -d : [int] choose if you want the real time display or not. Default = 1 else 0
