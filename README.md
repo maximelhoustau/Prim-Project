@@ -1,4 +1,4 @@
-# Footbar-Project
+# Prim-Project
 
 This is the repository that contains all code written during a project I worked on with the French start-up Footbar. The goal of this AI project is to analyse videos of 5 vs 5 football matches in order to detect specific actions over time and measure some physical caracteristics of the players on the field (speed for example).
 
