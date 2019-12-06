@@ -1,6 +1,7 @@
 import cv2
 import argparse
 import numpy as np
+import imutils
 
 mask = np.zeros((720, 1280, 3))
 
@@ -20,8 +21,10 @@ for row in range(mask.shape[0]):
 
 
 def apply_mask(image):
+    width = image.shape[1]
     result = image.copy()
-    result[mask!=0] = 0
+    mask_resized = imutils.resize(mask, width=width) 
+    result[mask_resized!=0] = 0
     return(result)
 
 
