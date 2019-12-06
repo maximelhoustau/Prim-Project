@@ -121,7 +121,7 @@ def MDF(masked, resized):
     return(timeline, motion)
 
 
-fig, ax = plt.subplots(3, 2, sharex='col', sharey='row')
+fig, ax = plt.subplots(3, 2, sharex='col', sharey='row', figsize=(8,10))
 
 timeline1, motion1 = MDF(masked = 0, resized = 0)
 ax[0,0].plot(timeline1, motion1)
