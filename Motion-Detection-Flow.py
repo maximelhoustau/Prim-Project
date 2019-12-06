@@ -11,14 +11,14 @@ from utils.Apply_mask import apply_mask
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help="path to the video file")
 ap.add_argument("-d", "--display", type=int, default=1, help="minimum area size")
-ap.add_argument("-r", "--resized", type=int, default=0, help="Set the width to resize the image")
+#ap.add_argument("-r", "--resized", type=int, default=0, help="Set the width to resize the image")
 
 args = vars(ap.parse_args())
 
 displayed = args["display"]
 video_title = args["video"]
-resized = args["resized"]
-
+#resized = args["resized"]
+resized = [500, 1000]
 image_folder = "./images/"
 video_folder = "./videos/"
 
@@ -68,8 +68,8 @@ def MDF(masked, resized):
         
         #Apply resized or not
         if(resized):
-            frame = imutils.resize(frame, width=500)
-            frame_t = imutils.resize(frame_t, width=500)       
+            frame = imutils.resize(frame, width=resized)
+            frame_t = imutils.resize(frame_t, width=resized)       
 
 
         # convert it to grayscale, and blur it
@@ -121,30 +121,58 @@ def MDF(masked, resized):
     return(timeline, motion)
 
 
-fig, ax = plt.subplots(2, 2, sharex='col', sharey='row')
+fig, ax = plt.subplots(3, 2, sharex='col', sharey='row')
 
-timeline, motion = MDF(masked = 0, resized = 0)
-ax[0,0].plot(timeline, motion)
-ax[0,0].set(ylabel='GME (pixels)', title='Video Unmasked and original size')
+timeline1, motion1 = MDF(masked = 0, resized = 0)
+ax[0,0].plot(timeline1, motion1)
+ax[0,0].set(ylabel='GME (pixels)', title='Video Unmasked, Shape=(720,1280,3)')
 ax[0,0].grid(True)
 
-timeline, motion = MDF(masked = 1, resized = 0)
-ax[0,1].plot(timeline, motion)
-ax[0,1].set(title = 'Video Masked and original size')
+timeline2, motion2 = MDF(masked = 1, resized = 0)
+ax[0,1].plot(timeline2, motion2)
+ax[0,1].set(title = 'Video Masked, Shape=(720,1280,3)')
 ax[0,1].grid(True)
 
-timeline, motion = MDF(masked = 0, resized = resized)
-ax[1,0].plot(timeline, motion)
-ax[1,0].set(xlabel='Time (ms)', ylabel='GME (pixels)', title = 'Video Unmasked and resized to '+str(resized))
+timeline3, motion3 = MDF(masked = 0, resized = resized[1])
+ax[1,0].plot(timeline3, motion3)
+ax[1,0].set(ylabel='GME (pixels)', title = 'Video Unmasked, Shape=(666,1000,3')
 ax[1,0].grid(True)
 
-timeline, motion = MDF(masked = 1, resized = resized)
-ax[1,1].plot(timeline, motion)
-ax[1,1].set(xlabel='Time (ms)', ylabel='GME (pixels)', title = 'Video Masked and resized to '+str(resized))
+timeline4, motion4 = MDF(masked = 1, resized = resized[1])
+ax[1,1].plot(timeline4, motion4)
+ax[1,1].set(title = 'Video Masked, Shape=(666,1000,3)')
 ax[1,1].grid(True)
 
+timeline5, motion5 = MDF(masked = 0, resized = resized[0])
+ax[2,0].plot(timeline5, motion5)
+ax[2,0].set(xlabel='Time (ms)', ylabel='GME (pixels)', title = 'Video Masked, Shape=(281,500,3)')
+ax[2,0].grid(True)
+
+timeline6, motion6 = MDF(masked = 1, resized = resized[0])
+ax[2,1].plot(timeline6, motion6)
+ax[2,1].set(xlabel='Time (ms)', title = 'Video Masked, Shape=(281,500,3)')
+ax[2,1].grid(True)
+
 plt.show()
-fig.savefig(image_folder+"GME_comparison_"+str(resized)+".png")
+fig.savefig(image_folder+"GME_comparison.png")
+
+
+fig, ax = plt.subplots(3, 1, sharex='col', sharey='row')
+ax[0].plot(timeline1, [motion1[i] - motion2[i] for i in range(len(motion1))])
+ax[0].set(ylabel='Noise (pixels)', title = 'Noise, Shape=(720,1080,3)')
+ax[0].grid(True)
+
+ax[1].plot(timeline3, [motion3[i] - motion4[i] for i in range(len(motion3))])
+ax[1].set(ylabel='Noise (pixels)', title = 'Noise, Shape=(666,1000,3)')
+ax[1].grid(True)
+
+ax[2].plot(timeline5, [motion5[i] - motion6[i] for i in range(len(motion5))])
+ax[2].set(xlabel = 'Time (ms)' ,ylabel='Noise (pixels)', title = 'Noise, Shape=(281,500,3)')
+ax[2].grid(True)
+
+plt.show()
+fig.savefig(image_folder+"Noise_GME_comparison.png")
+
 
 
 
