@@ -10,16 +10,67 @@ python3 Motion-Detection-Flow.py -v 'path_to_video' -i 'path_to_initalization_im
 ```
 >* -v : [str] option to pass the path of the video we want as input. Without it, it will get the video stream of your laptop's webcam:
 >* -d : [int] choose if you want the real time display or not. Default = 1 else 0
+>* -r : [int] size of the width to resize the video frames. Default = 0
 
 Here are the outputs with the following terminal line:
 ```bash
-python3 Motion-Detection-Flow.py -v timeline_test.mp4 
+python3 Motion-Detection-Flow.py -v timeline_test.mp4 -r 500
 ```
-Let's compare it with the same video unmasked:
-![GMEMeasuresNotMasked](/images/GME_notmasked.png)
+We have the comparisons of the signals in output of the algorithm when we apply a mask or not, and when we resize the image to a width of 500:
+![GMEComp500](/images/GME_comparison_500.png)
 
-This is the output with a mask used to avoid noise on score boards and field limitations:
-![GMEMeasures](/images/GME.png)
+The execution time comparison is made in the terminal output:
+```bash
+Video: ./videos/timeline_test.mp4
+Displayed : 0
+
+Masked : 0
+Size of the frames : (720, 1280, 3)
+Execution time : 55.12852096557617
+
+Masked : 1
+Size of the frames : (720, 1280, 3)
+Execution time : 97.16807866096497
+
+Masked : 0
+Size of the frames : (281, 500, 3)
+Execution time : 49.86319613456726
+
+Masked : 1
+Size of the frames : (281, 500, 3)
+Execution time : 83.85430908203125
+
+```
+
+Here are the outputs with the following terminal line:
+```bash
+python3 Motion-Detection-Flow.py -v timeline_test.mp4 -r 1000
+```
+We have the comparisons of the signals in output of the algorithm when we apply a mask or not, and when we resize the image to a width of 1000:
+![GMEComp1000](/images/GME_comparison_1000.png)
+
+The execution time comparison is made in the terminal output:
+```bash
+Video: ./videos/timeline_test.mp4
+Displayed : 0
+
+Masked : 0
+Size of the frames : (720, 1280, 3)
+Execution time : 56.564244985580444
+
+Masked : 1
+Size of the frames : (720, 1280, 3)
+Execution time : 94.05397605895996
+
+Masked : 0
+Size of the frames : (281, 500, 3)
+Execution time : 49.49067497253418
+
+Masked : 1
+Size of the frames : (281, 500, 3)
+Execution time : 81.78049516677856
+
+```
 
 * __Motion-Detection-Ref.py__
 
