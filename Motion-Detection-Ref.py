@@ -11,7 +11,6 @@ start_time = T.time()
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help="path to the video file")
-ap.add_argument("-i", "--initialization", help="set whether to initilize with a picture (provide path) or default with the first frame of the video")
 ap.add_argument("-a", "--min-area", type=int, default=500, help="minimum area size")
 ap.add_argument("-d", "--display", type=int, default=1, help="minimum area size")
 
@@ -22,7 +21,7 @@ video_folder = "./videos/"
 
 timeline = []
 event = False
-time = 0
+time_t = 0
 
 # if the video argument is None, then we are reading from webcam
 if args.get("video", None) is None:
@@ -33,56 +32,44 @@ if args.get("video", None) is None:
 else:
         vs = cv2.VideoCapture(video_folder + args["video"])
 
-# initialize the background as a picture
-if args.get("initialization", None) is None:
-        firstFrame = None
-
-# otherwise, we initialize the frame to none and we'll take the first frame of the video as
-# background
-else:
-        firstFrame = cv2.imread(image_folder + args["initialization"])
-        firstFrame = apply_mask(firstFrame)
-        #firstFrame = imutils.resize(firstFrame, width=800)
-        firstFrame = cv2.cvtColor(firstFrame, cv2.COLOR_BGR2GRAY)
-        firstFrame = cv2.GaussianBlur(firstFrame, (21, 21), 0)
-
 # Get the fps and number of frame to get the time of the video
 fps = vs.get(cv2.CAP_PROP_FPS)
 count = 0
 
+frame = vs.read()[1]
+frame_t = None
 # loop over the frames of the video
 while True:
-        # grab the current frame and initialize the occupied/unoccupied
-        # text
-        frame = vs.read()
-
-        #print(frame.shape)
-        frame = frame if args.get("video", None) is None else frame[1]
-        text = "Unoccupied"
-
-        # if the frame could not be grabbed, then we have reached the end
-        # of the video
-        if frame is None:
-                break
+        time = count/fps
+        grabbed = vs.grab()
+        if(grabbed):
+            count += 1
+            if((time - time_t) >= 1):
+                #grab the current frame
+                frame_t = vs.retrieve()[1]
+                time_t = time
+            else:
+                continue
+        else:
+            break
 
         # resize the frame, convert it to grayscale, and blur it
         #frame = imutils.resize(frame, width=800)
-        frame = apply_mask(frame)
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        #frame = apply_mask(frame)
         
-        # if the first frame is None, initialize it
-        if firstFrame is None:
-                firstFrame = gray
-                continue
-
-        # first frame
-        frameDelta = cv2.absdiff(firstFrame, gray)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray_t = cv2.cvtColor(frame_t, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        gray_t = cv2.GaussianBlur(gray_t, (21, 21), 0)
+        
+        
+        # compute motion frame
+        frameDelta = cv2.absdiff(gray, gray_t)
         thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
  
         # dilate the thresholded image to fill in holes, then find contours
         # on thresholded image
-        thresh = cv2.dilate(thresh, None, iterations=4)
+        thresh = cv2.dilate(thresh, None, iterations=2)
         cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
                 cv2.CHAIN_APPROX_SIMPLE)
         cnts = imutils.grab_contours(cnts)
@@ -132,7 +119,7 @@ while True:
             cv2.imwrite(image_folder+"MD_delta.jpg", frameDelta)
         
         #Count for next frame
-        count += 1
+        frame = frame_t
 
 # cleanup the camera and close any open windows
 vs.stop() if args.get("video", None) is None else vs.release()

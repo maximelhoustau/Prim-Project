@@ -6,19 +6,24 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from utils.Apply_mask import apply_mask
+from scipy import signal
 
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-v", "--video", help="path to the video file")
 ap.add_argument("-d", "--display", type=int, default=1, help="minimum area size")
-#ap.add_argument("-r", "--resized", type=int, default=0, help="Set the width to resize the image")
+ap.add_argument("-r", "--resized", type=int, default=0, help="Set the width to resize the image")
+ap.add_argument("-m", "--masked", type=int, default=0, help="Set whether to mask the frames or not")
+ap.add_argument("-t", "--timed", type=float, default=1, help="Set the time between 2 frames to analyse")
 
 args = vars(ap.parse_args())
 
 displayed = args["display"]
 video_title = args["video"]
-#resized = args["resized"]
-resized = [500, 1000]
+resized = args["resized"]
+masked = args["masked"]
+timed = args["timed"]
+
 image_folder = "./images/"
 video_folder = "./videos/"
 
@@ -52,7 +57,7 @@ def MDF(masked, resized):
         grabbed = vs.grab()
         if(grabbed):          
             count += 1
-            if((time - time_t) >= 0.07):
+            if((time - time_t) >= timed):
                 # grab the current frame 
                 frame_t = vs.retrieve()[1] 
                 time_t = time
@@ -100,7 +105,8 @@ def MDF(masked, resized):
                 break
             
         if key == ord("w"):
-            cv2.imwrite(image_folder+"MD_frame.jpg", frame)
+            cv2.imwrite(image_folder+"gray_n.jpg", gray)
+            cv2.imwrite(image_folder+"gray_n+1.jpg", gray_t)
             cv2.imwrite(image_folder+"MD_thresh.jpg", thresh)
             cv2.imwrite(image_folder+"MD_delta.jpg", frameDelta)
         
@@ -117,69 +123,30 @@ def MDF(masked, resized):
     print("\nMasked : "+str(masked))
     print("Size of the frames : "+str(frame.shape))
     print("Execution time : "+str(T.time() - start_time))
-    
+    print(timeline)
     return(timeline, motion)
 
+timeline, motion = MDF(masked = masked, resized = resized)
 
-fig, ax = plt.subplots(3, 2, sharex='col', sharey='row', figsize=(8,10))
-
-timeline1, motion1 = MDF(masked = 0, resized = 0)
-ax[0,0].plot(timeline1, motion1)
-ax[0,0].set(ylabel='GME (pixels)', title='Video Unmasked, Shape=(720,1280,3)')
-ax[0,0].grid(True)
-
-timeline2, motion2 = MDF(masked = 1, resized = 0)
-ax[0,1].plot(timeline2, motion2)
-ax[0,1].set(title = 'Video Masked, Shape=(720,1280,3)')
-ax[0,1].grid(True)
-
-timeline3, motion3 = MDF(masked = 0, resized = resized[1])
-ax[1,0].plot(timeline3, motion3)
-ax[1,0].set(ylabel='GME (pixels)', title = 'Video Unmasked, Shape=(666,1000,3')
-ax[1,0].grid(True)
-
-timeline4, motion4 = MDF(masked = 1, resized = resized[1])
-ax[1,1].plot(timeline4, motion4)
-ax[1,1].set(title = 'Video Masked, Shape=(666,1000,3)')
-ax[1,1].grid(True)
-
-timeline5, motion5 = MDF(masked = 0, resized = resized[0])
-ax[2,0].plot(timeline5, motion5)
-ax[2,0].set(xlabel='Time (ms)', ylabel='GME (pixels)', title = 'Video Masked, Shape=(281,500,3)')
-ax[2,0].grid(True)
-
-timeline6, motion6 = MDF(masked = 1, resized = resized[0])
-ax[2,1].plot(timeline6, motion6)
-ax[2,1].set(xlabel='Time (ms)', title = 'Video Masked, Shape=(281,500,3)')
-ax[2,1].grid(True)
-
+plt.plot(timeline, motion)
+plt.plot([210,210] , [0, max(motion)])
+plt.plot([1570,1570] , [0, max(motion)])
+plt.plot([1780,1780] , [0, max(motion)])
+plt.plot([3260,3260] , [0, max(motion)])
 plt.show()
-fig.savefig(image_folder+"GME_comparison.png")
 
+b, a = signal.butter(3, 0.05)
+#zi = signal.lfilter_zi(b, a)
+#z, _ = signal.lfilter(b, a, motion, zi=zi*motion[0])
+#z2, _ = signal.lfilter(b, a, z, zi=zi*z[0])
+#y = signal.filtfilt(b, a, motion)
+y = signal.filtfilt(b, a, motion)
 
-fig, ax = plt.subplots(3, 1, sharex='col', sharey='row')
-ax[0].plot(timeline1, [motion1[i] - motion2[i] for i in range(len(motion1))])
-ax[0].set(ylabel='Noise (pixels)', title = 'Noise, Shape=(720,1080,3)')
-ax[0].grid(True)
-
-ax[1].plot(timeline3, [motion3[i] - motion4[i] for i in range(len(motion3))])
-ax[1].set(ylabel='Noise (pixels)', title = 'Noise, Shape=(666,1000,3)')
-ax[1].grid(True)
-
-ax[2].plot(timeline5, [motion5[i] - motion6[i] for i in range(len(motion5))])
-ax[2].set(xlabel = 'Time (ms)' ,ylabel='Noise (pixels)', title = 'Noise, Shape=(281,500,3)')
-ax[2].grid(True)
-
+plt.plot(timeline, y)
+plt.plot([210,210] , [0, max(motion)])
+plt.plot([1570,1570] , [0, max(motion)])
+plt.plot([1780,1780] , [0, max(motion)])
+plt.plot([3260,3260] , [0, max(motion)])
 plt.show()
-fig.savefig(image_folder+"Noise_GME_comparison.png")
-
-
-
-
-
-
-
-
-
 
 
